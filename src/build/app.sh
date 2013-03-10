@@ -1,5 +1,5 @@
 r.js -o $(dirname $0)/app.build.js
-cd ../app
+cd $(dirname $0)/../../app
 echo 'post build..'
 
 # requirejs

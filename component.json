@@ -1,6 +1,6 @@
 {
-  "name": "RequireJS Tut",
-  "version": "1.0.0",
+  "name": "BRBapp",
+  "version": "0.1.0",
   "dependencies": {
     "requirejs": null,
     "jquery": null,
