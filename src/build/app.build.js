@@ -3,7 +3,7 @@
   baseUrl: "scripts",
   dir: "../../app",
   mainConfigFile: "../scripts/main.js",
-  fileExclusionRegExp: /(test(|s)|doc(|s)|example(|s)|jquery|underscore|backbone|bootstrap)/,
+  fileExclusionRegExp: /(^\.|app.build.js|test(|s)|doc(|s)|example(|s)|demo(|s)|dist|jquery|underscore|backbone|bootstrap)/,
   // name: "main",
   modules: [
       { name: "jquery" },
@@ -21,7 +21,7 @@
       },
       {
         name: "main",
-        exclude: ["jquery","bootstrap","underscore","backbone","text"]
+        exclude: ["jquery","bootstrap","underscore","backbone","text","tpl"]
       }
     ],
   optimizeCss: "standard"

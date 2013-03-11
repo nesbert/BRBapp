@@ -1,23 +1,27 @@
 require.config({
+  // urlArgs: "v=" + (new Date()).getTime(), // cache buster
   paths: {
+    // libs
     "jquery"     : "../vendor/jquery/jquery.min",
     "bootstrap"  : "../vendor/bootstrap/js/bootstrap.min",
     "underscore" : "../vendor/underscore-amd/underscore-min",
     "backbone"   : "../vendor/backbone-amd/backbone-min",
+    // plug-ins
+    "text"       : "../vendor/requirejs-text/text",
+    "tpl"        : "../vendor/requirejs-tpl/tpl",
   },
   shim: {
-    "bootstrap"  : ["jquery"],
-      "backbone" : {
-          "deps" : ["jquery", "underscore"],
-          "exports" : "Backbone"
-      },
-      "underscore": {
-          "exports" : "_"
-      }
+    "underscore": {
+        "exports" : "_"
+    },
+    "backbone" : {
+        "deps" : ["jquery", "underscore"],
+        "exports" : "Backbone"
+    },
+    "bootstrap"  : ["jquery"]
   }
-  // ,urlArgs: "v=2" + (new Date()).getTime()
 });
 
-require(['jquery','bootstrap','views/app'], function($,fat,AppView) {
+require(['jquery','bootstrap','views/app'], function($,bs,AppView) {
   return new AppView;
 });

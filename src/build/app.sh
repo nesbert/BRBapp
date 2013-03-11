@@ -4,9 +4,13 @@ echo 'post build..'
 
 # requirejs
 mv -v vendor/requirejs/require.js require.js
+mv -v vendor/requirejs-text/text.js text.js
+mv -v vendor/requirejs-tpl/tpl.js tpl.js
 echo 'deleting...'
-rm -rfv vendor/requirejs
+rm -rfv vendor/requirejs*
 mkdir vendor/requirejs && mv -v require.js vendor/requirejs/require.js
+mkdir vendor/requirejs-text && mv -v text.js vendor/requirejs-text/text.js
+mkdir vendor/requirejs-tpl && mv -v tpl.js vendor/requirejs-tpl/tpl.js
 
 # scripts
 mkdir scripts.tmp

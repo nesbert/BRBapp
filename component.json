@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "dependencies": {
     "requirejs": null,
+    "requirejs-text": null,
+    "requirejs-tpl": "git@github.com:eeroan/requirejs-tpl.git",
     "jquery": null,
     "backbone-amd": null,
     "underscore-amd": null,
