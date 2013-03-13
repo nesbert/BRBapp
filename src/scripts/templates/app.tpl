@@ -35,11 +35,11 @@
       <h4>AMD (no chips here)</h4>
       <p>Why RequireJs? Why not? Did I mention all the cool kids are using it?</p>
 
-      <h4>Quality</h4>
-      <p><span class="label label-info">Coming</span> The quality is in the unit testing. Qunit vs Jasmine and JSLint vs JSHint. Can't we all just get along!?</p>
+      <h4>Quality Check</h4>
+      <p><span class="label label-info">Coming</span> The quality is in the unit testing (Qunit or Jasmine or Mocha hmm?). JSHint for source linting.</p>
 
       <h4>Workflow Automation</h4>
-      <p>Build, Test and Deploy tools are AWESOME (minify, concat, automate as much as possible). Built on Node.js, bower, and r.js the more the merrier.</p>
+      <p>Build, test, optimize, deploy and archive. Built with OSS <3 (node.js, npm, grunt, bower, and r.js the more the merrier).</p>
     </div>
   </div>
 

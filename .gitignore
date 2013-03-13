@@ -1,2 +1,6 @@
 app
 src/vendor
+archive
+node_modules
+npm-debug.log
+.DS_STORE

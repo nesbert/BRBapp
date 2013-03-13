@@ -8,20 +8,21 @@ require.config({
     "backbone"   : "../vendor/backbone-amd/backbone-min",
     // plug-ins
     "text"       : "../vendor/requirejs-text/text",
-    "tpl"        : "../vendor/requirejs-tpl/tpl",
+    "tpl"        : "../vendor/requirejs-tpl/tpl"
   },
   shim: {
     "underscore": {
         "exports" : "_"
     },
     "backbone" : {
-        "deps" : ["jquery", "underscore"],
-        "exports" : "Backbone"
+      "deps" : ["jquery", "underscore"],
+      "exports" : "Backbone"
     },
     "bootstrap"  : ["jquery"]
   }
 });
 
-require(['jquery','bootstrap','views/app'], function($,bs,AppView) {
-  return new AppView;
+require(['app'], function(App) {
+  "use strict";
+  window.BRBapp = new App();
 });

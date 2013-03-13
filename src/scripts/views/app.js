@@ -3,15 +3,22 @@ define(['backbone','tpl!templates/app.tpl'], function(Backbone, tpl) {
 
   var AppView = Backbone.View.extend({
 
-    initialize: function() {
-      this.render();
+    events: {
+      "click .btn-primary" : "click"
     },
 
-    render: function(){
-      $('html body').html(tpl(this.options));
+    render: function() {
+      this.$el.html(tpl(this.options));
+      return this;
+    },
+
+    click: function() {
+      if (BRBapp.debug) {
+        console.log('click', BRBapp);
+      }
     }
 
   });
-  
+
   return AppView;
 });

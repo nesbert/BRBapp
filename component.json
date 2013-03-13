@@ -1,13 +1,13 @@
 {
   "name": "BRBapp",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "dependencies": {
-    "requirejs": null,
-    "requirejs-text": null,
-    "requirejs-tpl": "git@github.com:eeroan/requirejs-tpl.git",
-    "jquery": null,
-    "backbone-amd": null,
-    "underscore-amd": null,
+    "jquery": "~1.9.1",
+    "underscore-amd": "~1.4.4",
+    "backbone-amd": "~0.9.10",
+    "requirejs": "~2.1.5",
+    "requirejs-text": "~2.0.5",
+    "requirejs-tpl": "latest",
     "bootstrap": "http://twitter.github.com/bootstrap/assets/bootstrap.zip"
   }
 }
