@@ -1,4 +1,6 @@
+/*global __dirname, module */
 module.exports = function(grunt) {
+  "use strict";
 
   grunt.initConfig({
 
@@ -10,41 +12,8 @@ module.exports = function(grunt) {
     },
 
     jshint: {
-      // http://www.jshint.com/docs/#options
-      options: {
-        "asi": true,
-        "boss": true,
-        "browser": true,
-        "camelcase": true,
-        "curly": false,
-        "debug": false,
-        "devel": true,
-        "eqeqeq": true,
-        "eqnull": true,
-        "es5": false,
-        "evil": false,
-        "immed": false,
-        // "indent": 2,
-        "jquery": true,
-        "latedef": true,
-        "laxbreak": true,
-        "laxcomma": true,
-        "maxcomplexity": 6,
-        "maxdepth": 4,
-        // "maxlen": 80,
-        "maxstatements": 25,
-        "newcap": true,
-        "node": false,
-        "noempty": false,
-        "nonew": true,
-        "quotmark": null,
-        "smarttabs": true,
-        "strict": true,
-        "trailing": false,
-        "undef": false,
-        "unused": true
-      },
-      beforeconcat: ["<%= dirs.src %>/scripts/**/*.js"]
+      options: { jshintrc: ".jshintrc" },
+      files: ["Gruntfile.js", "<%= dirs.src %>/scripts/**/*.js"]
     },
 
     requirejs: {
@@ -54,8 +23,8 @@ module.exports = function(grunt) {
           appDir: "<%= dirs.src %>",
           baseUrl: 'scripts',
           dir: "<%= dirs.dist %>",
+          inlineText: true,
           mainConfigFile: "<%= dirs.src %>/scripts/main.js",
-          fileExclusionRegExp: /(^\.|app.build.js|test(|s)|doc(|s)|example(|s)|demo(|s)|dist|jquery|underscore|backbone|bootstrap)/,
           modules: [
               { name: "jquery" },
               {
@@ -70,21 +39,29 @@ module.exports = function(grunt) {
                 name: "backbone",
                 exclude: ["jquery","underscore"]
               },
+              { name: "text" },
+              { name: "tpl" },
               {
                 name: "main",
                 exclude: ["jquery","bootstrap","underscore","backbone","text","tpl"]
               }
             ],
-          optimizeCss: "standard"
+          optimize: "uglify",
+          optimizeCss: "standard",
+          preserveLicenseComments: false,
+          skipDirOptimize: true
         }
       }
     },
 
     exec: {
+      "postbuild-css"       : { cmd: "cd <%= dirs.dist %> && mv -v css/main.css main.css && echo 'deleting css source files...' && rm -rfv css/* && mv -v main.css css/main.css" },
       "postbuild-scripts"   : { cmd: "cd <%= dirs.dist %> && mkdir -v scripts.tmp && mv -v scripts/main.js scripts.tmp && echo 'deleting...' && rm -rfv scripts build build.txt && mv -v scripts.tmp scripts" },
-      "postbuild-css"       : { cmd: "cd <%= dirs.dist %> && mv -v css/main.css main.css && echo 'deleting...' && rm -rfv css/* && mv -v main.css css/main.css" },
-      "postbuild-bootstrap" : { cmd: "cd <%= dirs.dist %> && mkdir -v vendor/bootstrap/css && cp -fv ../src/vendor/bootstrap/css/*.min.css vendor/bootstrap/css/ && mkdir -v vendor/bootstrap/img && cp -fv ../src/vendor/bootstrap/img/*.png vendor/bootstrap/img/"},
-      "postbuild-requirejs" : { cmd: "cd <%= dirs.dist %> && mv -v vendor/requirejs/require.js require.js && mv -v vendor/requirejs-text/text.js text.js && mv -v vendor/requirejs-tpl/tpl.js tpl.js && echo 'deleting...' && rm -rfv vendor/requirejs* && mkdir vendor/requirejs && mv -v require.js vendor/requirejs/require.js && mkdir vendor/requirejs-text && mv -v text.js vendor/requirejs-text/text.js && mkdir vendor/requirejs-tpl && mv -v tpl.js vendor/requirejs-tpl/tpl.js"}
+      "postbuild-bootstrap" : { cmd: "cd <%= dirs.dist %> && mkdir -v assets.tmp && echo 'copying bootstrap assets...' && cp -rf vendor/bootstrap/docs/assets/* assets.tmp && echo 'deleting bootstrap source files...' && rm -rf vendor/bootstrap && mkdir -vp vendor/bootstrap/docs && mv -v assets.tmp vendor/bootstrap/docs/assets && cd vendor/bootstrap/docs/assets && rm -rf ico && cd js && rm -rf bootstrap-* app* *.min.js jquery.js READ*"},
+      "postbuild-requirejs" : { cmd: "cd <%= dirs.dist %>&& mv -v vendor/requirejs/require.js require.js && mv -v vendor/requirejs-text/text.js text.js && mv -v vendor/requirejs-tpl/tpl.js tpl.js && echo 'deleting requirejs source files...' && rm -rf vendor/requirejs* && mkdir vendor/requirejs && mv -v require.js vendor/requirejs/require.js && mkdir vendor/requirejs-text && mv -v text.js vendor/requirejs-text/text.js && mkdir vendor/requirejs-tpl && mv -v tpl.js vendor/requirejs-tpl/tpl.js"},
+      "postbuild-backbone"  : { cmd: "cd <%= dirs.dist %> && mv -v vendor/backbone-amd/backbone.js backbone.js && echo 'deleting backbone source files...' && rm -rf vendor/backbone-amd && mkdir -v vendor/backbone-amd && mv -v backbone.js vendor/backbone-amd/backbone.js"},
+      "postbuild-underscore": { cmd: "cd <%= dirs.dist %> && mv -v vendor/underscore-amd/underscore.js underscore.js && echo 'deleting underscore source files...' && rm -rf vendor/underscore-amd && mkdir -v vendor/underscore-amd && mv -v underscore.js vendor/underscore-amd/underscore.js"},
+      "postbuild-jquery"    : { cmd: "cd <%= dirs.dist %> && mv -v vendor/jquery/jquery.js jquery.js && echo 'deleting jquery source files...' && rm -rf vendor/jquery && mkdir -v vendor/jquery && mv -v jquery.js vendor/jquery/jquery.js"}
     },
 
     compress: {
@@ -105,6 +82,21 @@ module.exports = function(grunt) {
         files: [
           { src: "src/**", dest: "<%= pkg.name %>/" }
         ]
+      },
+      dev: {
+        options: {
+          archive: "<%= dirs.archive %>/<%= pkg.name %>.v<%= pkg.version %>-dev.zip",
+          pretty: true
+        },
+        files: [
+          { dest: "<%= pkg.name %>/", src: "src/**" },
+          { dest: "<%= pkg.name %>/", src: ".bowerrc" },
+          { dest: "<%= pkg.name %>/", src: ".gitignore" },
+          { dest: "<%= pkg.name %>/", src: ".jshintrc" },
+          { dest: "<%= pkg.name %>/", src: "*.json" },
+          { dest: "<%= pkg.name %>/", src: "*.js" },
+          { dest: "<%= pkg.name %>/", src: "README.md" }
+        ]
       }
     },
 
@@ -124,7 +116,7 @@ module.exports = function(grunt) {
   grunt.registerTask('test', 'Run tests and lint source files.', ['jshint']);
   grunt.registerTask('lint', 'Lint project source files.', ['jshint']);
   grunt.registerTask('build', 'Build project.', ['test', 'requirejs','postbuild']);
-  grunt.registerTask('postbuild', 'Post build routine.', ['exec:postbuild-requirejs', 'exec:postbuild-scripts','exec:postbuild-css','exec:postbuild-bootstrap']);
+  grunt.registerTask('postbuild', 'Post build routine.', ['exec:postbuild-jquery','exec:postbuild-underscore','exec:postbuild-backbone','exec:postbuild-requirejs','exec:postbuild-bootstrap','exec:postbuild-scripts','exec:postbuild-css']);
   grunt.registerTask('build-zip', 'Build and compress for distrubution.', ['build', 'compress:app']);
 
 };

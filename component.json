@@ -2,12 +2,11 @@
   "name": "BRBapp",
   "version": "0.0.1",
   "dependencies": {
-    "jquery": "~1.9.1",
+    "bootstrap": "~2.3.1",
     "underscore-amd": "~1.4.4",
     "backbone-amd": "~0.9.10",
     "requirejs": "~2.1.5",
     "requirejs-text": "~2.0.5",
-    "requirejs-tpl": "latest",
-    "bootstrap": "http://twitter.github.com/bootstrap/assets/bootstrap.zip"
+    "requirejs-tpl": "latest"
   }
 }
