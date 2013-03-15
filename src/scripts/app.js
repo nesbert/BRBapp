@@ -2,7 +2,7 @@ define(['views/app','bootstrap'],function(AppView) {
   "use strict";
 
   var view = new AppView();
-  $('html body').prepend(view.render().el);
+  $('#content').html(view.render().el);
 
   return function() {
     this.debug = false;

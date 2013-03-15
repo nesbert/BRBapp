@@ -3,10 +3,10 @@
   "version": "0.0.1",
   "dependencies": {
     "bootstrap": "~2.3.1",
-    "underscore-amd": "~1.4.4",
-    "backbone-amd": "~0.9.10",
+    "underscore": "~1.4.4",
+    "backbone": "~0.9.10",
     "requirejs": "~2.1.5",
     "requirejs-text": "~2.0.5",
-    "requirejs-tpl": "latest"
+    "requirejs-tpl": "git@github.com:eeroan/requirejs-tpl.git"
   }
 }

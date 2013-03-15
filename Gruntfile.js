@@ -59,9 +59,13 @@ module.exports = function(grunt) {
       "postbuild-scripts"   : { cmd: "cd <%= dirs.dist %> && mkdir -v scripts.tmp && mv -v scripts/main.js scripts.tmp && echo 'deleting...' && rm -rfv scripts build build.txt && mv -v scripts.tmp scripts" },
       "postbuild-bootstrap" : { cmd: "cd <%= dirs.dist %> && mkdir -v assets.tmp && echo 'copying bootstrap assets...' && cp -rf vendor/bootstrap/docs/assets/* assets.tmp && echo 'deleting bootstrap source files...' && rm -rf vendor/bootstrap && mkdir -vp vendor/bootstrap/docs && mv -v assets.tmp vendor/bootstrap/docs/assets && cd vendor/bootstrap/docs/assets && rm -rf ico && cd js && rm -rf bootstrap-* app* *.min.js jquery.js READ*"},
       "postbuild-requirejs" : { cmd: "cd <%= dirs.dist %>&& mv -v vendor/requirejs/require.js require.js && mv -v vendor/requirejs-text/text.js text.js && mv -v vendor/requirejs-tpl/tpl.js tpl.js && echo 'deleting requirejs source files...' && rm -rf vendor/requirejs* && mkdir vendor/requirejs && mv -v require.js vendor/requirejs/require.js && mkdir vendor/requirejs-text && mv -v text.js vendor/requirejs-text/text.js && mkdir vendor/requirejs-tpl && mv -v tpl.js vendor/requirejs-tpl/tpl.js"},
-      "postbuild-backbone"  : { cmd: "cd <%= dirs.dist %> && mv -v vendor/backbone-amd/backbone.js backbone.js && echo 'deleting backbone source files...' && rm -rf vendor/backbone-amd && mkdir -v vendor/backbone-amd && mv -v backbone.js vendor/backbone-amd/backbone.js"},
-      "postbuild-underscore": { cmd: "cd <%= dirs.dist %> && mv -v vendor/underscore-amd/underscore.js underscore.js && echo 'deleting underscore source files...' && rm -rf vendor/underscore-amd && mkdir -v vendor/underscore-amd && mv -v underscore.js vendor/underscore-amd/underscore.js"},
+      "postbuild-backbone"  : { cmd: "cd <%= dirs.dist %> && mv -v vendor/backbone/backbone.js backbone.js && echo 'deleting backbone source files...' && rm -rf vendor/backbone && mkdir -v vendor/backbone && mv -v backbone.js vendor/backbone/backbone.js"},
+      "postbuild-underscore": { cmd: "cd <%= dirs.dist %> && mv -v vendor/underscore/underscore.js underscore.js && echo 'deleting underscore source files...' && rm -rf vendor/underscore && mkdir -v vendor/underscore && mv -v underscore.js vendor/underscore/underscore.js"},
       "postbuild-jquery"    : { cmd: "cd <%= dirs.dist %> && mv -v vendor/jquery/jquery.js jquery.js && echo 'deleting jquery source files...' && rm -rf vendor/jquery && mkdir -v vendor/jquery && mv -v jquery.js vendor/jquery/jquery.js"}
+    },
+
+    clean: {
+      build: ["<%= dirs.dist %>"]
     },
 
     compress: {
@@ -100,23 +104,33 @@ module.exports = function(grunt) {
       }
     },
 
+    uglify: {
+      requirejs: {
+        files: {
+          "<%= dirs.dist %>/vendor/requirejs/require.js": ["<%= dirs.dist %>/vendor/requirejs/require.js"]
+        }
+      }
+    },
+
     pkg: grunt.file.readJSON('package.json')
 
   });
 
   // dependencies
   grunt.loadNpmTasks('grunt-exec');
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-compress');
   grunt.loadNpmTasks('grunt-contrib-copy'); // TODO
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-requirejs');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
 
   // register tasks
   grunt.registerTask('default', ['build']);
   grunt.registerTask('test', 'Run tests and lint source files.', ['jshint']);
   grunt.registerTask('lint', 'Lint project source files.', ['jshint']);
-  grunt.registerTask('build', 'Build project.', ['test', 'requirejs','postbuild']);
-  grunt.registerTask('postbuild', 'Post build routine.', ['exec:postbuild-jquery','exec:postbuild-underscore','exec:postbuild-backbone','exec:postbuild-requirejs','exec:postbuild-bootstrap','exec:postbuild-scripts','exec:postbuild-css']);
+  grunt.registerTask('build', 'Build project.', ['test', 'clean:build', 'requirejs','postbuild']);
+  grunt.registerTask('postbuild', 'Post build routine.', ['exec:postbuild-jquery','exec:postbuild-underscore','exec:postbuild-backbone','exec:postbuild-requirejs','uglify:requirejs','exec:postbuild-bootstrap','exec:postbuild-scripts','exec:postbuild-css']);
   grunt.registerTask('build-zip', 'Build and compress for distrubution.', ['build', 'compress:app']);
 
 };
