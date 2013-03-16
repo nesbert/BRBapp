@@ -23,11 +23,11 @@
   "node": false,
   "noempty": true,
   "nonew": true,
-  "quotmark": null,
+  "quotmark": "single",
   "smarttabs": true,
   "strict": true,
   "trailing": true,
   "undef": true,
   "unused": true,
   "globals": { "BRBapp":false, "define":false, "require":false, "$":false, "_":false, "Backbone":false }
-} 
+}
